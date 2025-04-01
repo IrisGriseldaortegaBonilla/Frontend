@@ -15,7 +15,11 @@ const Encabezado = () => {
   // Hook para obtener la ubicación actual de la ruta
   const ubicacion = useLocation();
 
+<<<<<<< HEAD
   // Validación del estado de autenticación con localStorage 
+=======
+  // Validación del estado de autenticación con localStorage
+>>>>>>> cc8b87e5fec2731381e5b37db9bd0d5855fbab5c
   const estaLogueado = !!localStorage.getItem("usuario") && !!localStorage.getItem("contraseña");
 
   // Función para cerrar sesión
@@ -95,6 +99,7 @@ const Encabezado = () => {
               </Nav.Link>
 
               <Nav.Link
+<<<<<<< HEAD
                 onClick={() => navegarA("/usuarios")}
                 className={estaColapsado ? "text-black" : "text-white"}
               >
@@ -104,6 +109,8 @@ const Encabezado = () => {
 
 
               <Nav.Link
+=======
+>>>>>>> cc8b87e5fec2731381e5b37db9bd0d5855fbab5c
                 onClick={() => navegarA("/productos")}
                 className={estaColapsado ? "text-black" : "text-white"}
               >
@@ -111,6 +118,7 @@ const Encabezado = () => {
                 <strong>Productos</strong>
               </Nav.Link>
 
+<<<<<<< HEAD
               <Nav.Link
                 onClick={() => navegarA("/ventas")}
                 className={estaColapsado ? "text-black" : "text-white"}
@@ -128,6 +136,8 @@ const Encabezado = () => {
                 <strong>Categorias</strong>
               </Nav.Link>
 
+=======
+>>>>>>> cc8b87e5fec2731381e5b37db9bd0d5855fbab5c
               {/* Lógica condicional para mostrar Cerrar Sesión o Iniciar Sesión */}
               {estaLogueado ? (
                 // Opción de cerrar sesión

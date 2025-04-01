@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Importaciones necesarias para la vista
 import React, { useState, useEffect } from 'react';
 import TablaClientes from '../components/clientes/Tablacliente'; // Importa el componente de tabla
@@ -48,4 +49,16 @@ const Clientes = () => {
 };
 
 // Exportación del componente
+=======
+import Inicioclientes from "../components/clientes/inicioclientes";
+
+const Clientes =()=>{
+    return(
+        <>
+        <Inicioclientes/>
+        </>
+    );
+}
+
+>>>>>>> cc8b87e5fec2731381e5b37db9bd0d5855fbab5c
 export default Clientes;

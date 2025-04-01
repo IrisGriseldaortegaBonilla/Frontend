@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react'; 
 import { Container } from "react-bootstrap";
 import TablaProducto from '../components/producto/Tablaproducto';// Importa el componente de tabla
@@ -48,4 +49,17 @@ const Productos = () => {
 };
 
 // Exportación del componente
+=======
+import Inicioproductos from "../components/producto/inicioproducto";
+
+
+const Productos =()=>{
+    return(
+        <>
+        <Inicioproductos/>
+        </>
+    );
+}
+
+>>>>>>> cc8b87e5fec2731381e5b37db9bd0d5855fbab5c
 export default Productos;
