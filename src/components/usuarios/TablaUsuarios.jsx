@@ -1,11 +1,9 @@
 // Importaciones necesarias para el componente visual
-
-// Importaciones necesarias para el componente visual
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// Declaración del componente TablaCategorias que recibe props
+// Declaración del componente TablaUsuariosu que recibe props
 const TablaUsuarios = ({ usuarios, cargando, error }) => {
   // Renderizado condicional según el estado recibido por props
   if (cargando) {
@@ -20,9 +18,9 @@ const TablaUsuarios = ({ usuarios, cargando, error }) => {
     <Table striped bordered hover responsive>
       <thead>
         <tr>
-          <th>ID Usuarios</th>
-          <th>usuario</th>
-          <th>contraseña</th>
+          <th>ID Usuario</th>
+          <th>Usuario</th>
+          <th>Contraseña</th>
         </tr>
       </thead>
       <tbody>
@@ -31,7 +29,6 @@ const TablaUsuarios = ({ usuarios, cargando, error }) => {
             <td>{usuario.id_usuario}</td>
             <td>{usuario.usuario}</td>
             <td>{usuario.contraseña}</td>
-            
           </tr>
         ))}
       </tbody>

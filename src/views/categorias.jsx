@@ -1,8 +1,9 @@
 // Importaciones necesarias para la vista
 import React, { useState, useEffect } from 'react';
-import TablaCategorias from '../components/categoria/tablacategoria';
+import TablaCategorias from '../components/categorias/TablaCategorias.jsx'; // Importa el componente de tabla
+import ModalRegistroCategoria from '../components/categorias/ModalRegistroCategoria.jsx';
 import { Container, Button } from "react-bootstrap";
-import ModalRegistroCategoria from '../components/categoria/ModalRegistroCategoria';
+
 
 // Declaración del componente Categorias
 const Categorias = () => {
@@ -10,6 +11,8 @@ const Categorias = () => {
   const [listaCategorias, setListaCategorias] = useState([]); // Almacena los datos de la API
   const [cargando, setCargando] = useState(true);            // Controla el estado de carga
   const [errorCarga, setErrorCarga] = useState(null);        // Maneja errores de la petición
+
+  
   const [mostrarModal, setMostrarModal] = useState(false);
   const [nuevaCategoria, setNuevaCategoria] = useState({
     nombre_categoria: '',
@@ -17,25 +20,25 @@ const Categorias = () => {
   });
 
   const obtenerCategorias = async () => { // Método renombrado a español
-      try {
-        const respuesta = await fetch('http://localhost:3000/api/categoria');
-        if (!respuesta.ok) {
-          throw new Error('Error al cargar las categorías');
-        }
-        const datos = await respuesta.json();
-        setListaCategorias(datos);    // Actualiza el estado con los datos
-        setCargando(false);           // Indica que la carga terminó
-      } catch (error) {
-        setErrorCarga(error.message); // Guarda el mensaje de error
-        setCargando(false);           // Termina la carga aunque haya error
+    try {
+      const respuesta = await fetch('http://localhost:3008/api/categorias');
+      if (!respuesta.ok) {
+        throw new Error('Error al cargar las categorías');
       }
-    };
+      const datos = await respuesta.json();
+      setListaCategorias(datos);    // Actualiza el estado con los datos
+      setCargando(false);           // Indica que la carga terminó
+    } catch (error) {
+      setErrorCarga(error.message); // Guarda el mensaje de error
+      setCargando(false);           // Termina la carga aunque haya error
+    }
+  }; 
 
+  // Lógica de obtención de datos con useEffect
   // Lógica de obtención de datos con useEffect
   useEffect(() => {
     obtenerCategorias();            // Ejecuta la función al montar el componente
-  }, []);                           // Array vacío para que solo se ejecute una vez
-
+  }, []); 
 
 // Maneja los cambios en los inputs del modal
 const manejarCambioInput = (e) => {
@@ -46,9 +49,9 @@ const manejarCambioInput = (e) => {
   }));
 };
 
-
  // Manejo la inserción de una nueva categoría
  const agregarCategoria = async () => {
+
   if (!nuevaCategoria.nombre_categoria || !nuevaCategoria.descripcion_categoria) {
   setErrorCarga("Por favor, completa todos los campos antes de guardar.");
   return;
@@ -76,9 +79,6 @@ const manejarCambioInput = (e) => {
   }
 };
 
-
-
-
   // Renderizado de la vista
   return (
     <>
@@ -95,10 +95,9 @@ const manejarCambioInput = (e) => {
         <TablaCategorias 
           categorias={listaCategorias} 
           cargando={cargando} 
-          error={errorCarga} 
+          error={errorCarga}   
         />
-
-      <ModalRegistroCategoria
+     <ModalRegistroCategoria
           mostrarModal={mostrarModal}
           setMostrarModal={setMostrarModal}
           nuevaCategoria={nuevaCategoria}
@@ -106,7 +105,6 @@ const manejarCambioInput = (e) => {
           agregarCategoria={agregarCategoria}
           errorCarga={errorCarga}
         />
-
       </Container>
     </>
   );

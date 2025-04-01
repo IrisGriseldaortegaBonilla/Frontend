@@ -1,6 +1,6 @@
 // Importaciones necesarias para la vista
 import React, { useState, useEffect } from 'react';
-import TablaVentas from '../components/ventas/Tablaventas';// Importa el componente de tabla
+import TablaVentas from '../components/ventas/TablaVentas'; // Importa el componente de tabla
 import { Container } from "react-bootstrap";
 
 // Declaración del componente Ventas
@@ -14,7 +14,7 @@ const Ventas = () => {
   useEffect(() => {
     const obtenerVentas = async () => {
       try {
-        const respuesta = await fetch('http://localhost:3000/api/ventas'); // Ruta ajustada al controlador
+        const respuesta = await fetch('http://localhost:3008/api/ventas'); // Ruta ajustada al controlador
         if (!respuesta.ok) {
           throw new Error('Error al cargar las ventas');
         }
