@@ -1,51 +1,78 @@
-// Importaciones necesarias para la vista
 import React, { useState, useEffect } from 'react';
-import TablaEmpleados from '../components/empleados/TablaEmpleados.jsx'; // Importa el componente de tabla
-import { Container } from "react-bootstrap";
+import TablaEmpleados from '../components/empleados/TablaEmpleados.jsx';
+import ModalRegistroEmpleado from '../components/empleados/ModalRegistroEmpleado.jsx';
+import { Container, Button } from "react-bootstrap";
 
-// Declaración del componente Empleados
 const Empleados = () => {
-  // Estados para manejar los datos, carga y errores
-  const [listaEmpleados, setListaEmpleados] = useState([]); // Almacena los datos de la API
-  const [cargando, setCargando] = useState(true);            // Controla el estado de carga
-  const [errorCarga, setErrorCarga] = useState(null);        // Maneja errores de la petición
+  const [listaEmpleados, setListaEmpleados] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [errorCarga, setErrorCarga] = useState(null);
 
-  // Lógica de obtención de datos con useEffect
-  useEffect(() => {
-    const obtenerEmpleados = async () => { // Método renombrado a español
-      try {
-        const respuesta = await fetch('http://localhost:3008/api/empleados');
-        if (!respuesta.ok) {
-          throw new Error('Error al cargar los Empleados');
-        }
-        const datos = await respuesta.json();
-        setListaEmpleados(datos);    // Actualiza el estado con los datos
-        setCargando(false);           // Indica que la carga terminó
-      } catch (error) {
-        setErrorCarga(error.message); // Guarda el mensaje de error
-        setCargando(false);           // Termina la carga aunque haya error
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [nuevoEmpleado, setNuevoEmpleado] = useState({
+    primer_nombre: '',
+    segundo_nombre: '',
+    primer_apellido: '',
+    segundo_apellido: '',
+    celular: '',
+    cargo: '',
+    fecha_contratacion: ''
+  });
+
+  const obtenerEmpleados = async () => {
+    try {
+      const respuesta = await fetch('http://localhost:3008/api/empleados');
+      if (!respuesta.ok) {
+        throw new Error('Error al cargar los empleados');
       }
-    };
-    obtenerEmpleados();            // Ejecuta la función al montar el componente
-  }, []);                           // Array vacío para que solo se ejecute una vez
+      const datos = await respuesta.json();
+      setListaEmpleados(datos);
+      setCargando(false);
+    } catch (error) {
+      setErrorCarga(error.message);
+      setCargando(false);
+    }
+  };
 
-  // Renderizado de la vista
+  useEffect(() => {
+    obtenerEmpleados();
+  }, []);
+
+  const manejarCambioInput = (e) => {
+    const { name, value } = e.target;
+    setNuevoEmpleado(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const agregarEmpleado = async () => {
+    try {
+      const respuesta = await fetch('http://localhost:3008/api/registrarempleado', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(nuevoEmpleado),
+      });
+
+      if (!respuesta.ok) throw new Error('Error al agregar el empleado');
+
+      await obtenerEmpleados();
+      setNuevoEmpleado({ primer_nombre: '', segundo_nombre: '', primer_apellido: '', segundo_apellido: '', celular: '', cargo: '', fecha_contratacion: '' });
+      setMostrarModal(false);
+      setErrorCarga(null);
+    } catch (error) {
+      setErrorCarga(error.message);
+    }
+  };
+
   return (
-    <>
-      <Container className="mt-5">
-        <br />
-        <h4>Empleados</h4>
-
-        {/* Pasa los estados como props al componente TablaEmpleados */}
-        <TablaEmpleados
-          empleados={listaEmpleados} 
-          cargando={cargando} 
-          error={errorCarga} 
-        />
-      </Container>
-    </>
+    <Container className="mt-5">
+      <h4>Empleados</h4>
+      <Button variant="primary" onClick={() => setMostrarModal(true)}>Nuevo Empleado</Button>
+      <TablaEmpleados empleados={listaEmpleados} cargando={cargando} error={errorCarga} />
+      <ModalRegistroEmpleado mostrarModal={mostrarModal} setMostrarModal={setMostrarModal} nuevoEmpleado={nuevoEmpleado} manejarCambioInput={manejarCambioInput} agregarEmpleado={agregarEmpleado} errorCarga={errorCarga} />
+    </Container>
   );
 };
 
-// Exportación del componente
 export default Empleados;

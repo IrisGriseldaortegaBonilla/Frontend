@@ -1,19 +1,15 @@
-// Importaciones necesarias para el componente visual
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// Declaración del componente TablaUsuariosu que recibe props
 const TablaUsuarios = ({ usuarios, cargando, error }) => {
-  // Renderizado condicional según el estado recibido por props
   if (cargando) {
-    return <div>Cargando usuarios...</div>; // Muestra mensaje mientras carga
+    return <div>Cargando usuarios...</div>;
   }
   if (error) {
-    return <div>Error: {error}</div>;         // Muestra error si ocurre
+    return <div>Error: {error}</div>;
   }
 
-  // Renderizado de la tabla con los datos recibidos
   return (
     <Table striped bordered hover responsive>
       <thead>
@@ -36,5 +32,4 @@ const TablaUsuarios = ({ usuarios, cargando, error }) => {
   );
 };
 
-// Exportación del componente
 export default TablaUsuarios;

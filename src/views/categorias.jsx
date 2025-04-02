@@ -58,7 +58,7 @@ const manejarCambioInput = (e) => {
   }
 
   try {
-    const respuesta = await fetch('http://localhost:3000/api/registrarcategoria', {
+    const respuesta = await fetch('http://localhost:3008/api/registrarcategoria', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

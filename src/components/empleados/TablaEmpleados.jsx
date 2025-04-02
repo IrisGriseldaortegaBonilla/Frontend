@@ -23,7 +23,7 @@ const TablaEmpleados = ({ empleados, cargando, error }) => {
 
   return (
     <Table striped bordered hover responsive className="mt-3">
-      <thead className="table-dark">
+      <thead>
         <tr>
           <th>ID</th>
           <th>Primer Nombre</th>

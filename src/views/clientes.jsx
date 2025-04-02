@@ -1,51 +1,78 @@
-// Importaciones necesarias para la vista
 import React, { useState, useEffect } from 'react';
-import TablaClientes from '../components/clientes/TablaClientes.jsx'; // Importa el componente de tabla
-import { Container } from "react-bootstrap";
+import TablaClientes from '../components/clientes/TablaClientes.jsx';
+import ModalRegistroCliente from '../components/clientes/ModalRegistroCliente.jsx';
+import { Container, Button } from "react-bootstrap";
 
-// Declaración del componente Categorias
 const Clientes = () => {
-  // Estados para manejar los datos, carga y errores
-  const [listaClientes, setListaClientes] = useState([]); // Almacena los datos de la API
-  const [cargando, setCargando] = useState(true);            // Controla el estado de carga
-  const [errorCarga, setErrorCarga] = useState(null);        // Maneja errores de la petición
+  const [listaClientes, setListaClientes] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [errorCarga, setErrorCarga] = useState(null);
 
-  // Lógica de obtención de datos con useEffect
-  useEffect(() => {
-    const obtenerClientes = async () => { // Método renombrado a español
-      try {
-        const respuesta = await fetch('http://localhost:3008/api/clientes');
-        if (!respuesta.ok) {
-          throw new Error('Error al cargar los Clientes');
-        }
-        const datos = await respuesta.json();
-        setListaClientes(datos);    // Actualiza el estado con los datos
-        setCargando(false);           // Indica que la carga terminó
-      } catch (error) {
-        setErrorCarga(error.message); // Guarda el mensaje de error
-        setCargando(false);           // Termina la carga aunque haya error
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [nuevoCliente, setNuevoCliente] = useState({
+    primer_nombre: '',
+    segundo_nombre: '',
+    primer_apellido: '',
+    segundo_apellido: '',
+    celular: '',
+    direccion: '',
+    cedula: ''
+  });
+
+  const obtenerClientes = async () => {
+    try {
+      const respuesta = await fetch('http://localhost:3008/api/clientes');
+      if (!respuesta.ok) {
+        throw new Error('Error al cargar los clientes');
       }
-    };
-    obtenerClientes();            // Ejecuta la función al montar el componente
-  }, []);                           // Array vacío para que solo se ejecute una vez
+      const datos = await respuesta.json();
+      setListaClientes(datos);
+      setCargando(false);
+    } catch (error) {
+      setErrorCarga(error.message);
+      setCargando(false);
+    }
+  };
 
-  // Renderizado de la vista
+  useEffect(() => {
+    obtenerClientes();
+  }, []);
+
+  const manejarCambioInput = (e) => {
+    const { name, value } = e.target;
+    setNuevoCliente(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const agregarCliente = async () => {
+    try {
+      const respuesta = await fetch('http://localhost:3008/api/registrarcliente', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(nuevoCliente),
+      });
+
+      if (!respuesta.ok) throw new Error('Error al agregar el cliente');
+
+      await obtenerClientes();
+      setNuevoCliente({ primer_nombre: '', segundo_nombre: '', primer_apellido: '', segundo_apellido: '', celular: '', direccion: '', cedula: '' });
+      setMostrarModal(false);
+      setErrorCarga(null);
+    } catch (error) {
+      setErrorCarga(error.message);
+    }
+  };
+
   return (
-    <>
-      <Container className="mt-5">
-        <br />
-        <h4>Clientes</h4>
-
-        {/* Pasa los estados como props al componente TablaCategorias */}
-        <TablaClientes
-          clientes={listaClientes} 
-          cargando={cargando} 
-          error={errorCarga} 
-        />
-      </Container>
-    </>
+    <Container className="mt-5">
+      <h4>Clientes</h4>
+      <Button variant="primary" onClick={() => setMostrarModal(true)}>Nuevo Cliente</Button>
+      <TablaClientes clientes={listaClientes} cargando={cargando} error={errorCarga} />
+      <ModalRegistroCliente mostrarModal={mostrarModal} setMostrarModal={setMostrarModal} nuevoCliente={nuevoCliente} manejarCambioInput={manejarCambioInput} agregarCliente={agregarCliente} errorCarga={errorCarga} />
+    </Container>
   );
 };
 
-// Exportación del componente
 export default Clientes;
